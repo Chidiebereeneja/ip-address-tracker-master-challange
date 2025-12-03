@@ -40,7 +40,8 @@ const SubPara = styled.p`
 
 export default function DetailedIpAddress() {
   const { payload } = UseIpAddress();
-  //   console.log(payload);
+
+  if (!payload?.ip) return;
 
   return (
     <SectionContainer>
@@ -51,18 +52,19 @@ export default function DetailedIpAddress() {
 
       <SubContainer>
         <SubHeader>Location</SubHeader>
-        <SubPara>{`${payload?.city}, ${payload?.country}`}</SubPara>
+        <SubPara>{`${payload?.city || ""}${payload?.city ? "," : ""} ${
+          payload?.country || ""
+        }`}</SubPara>
       </SubContainer>
 
       <SubContainer>
         <SubHeader>TimeZone</SubHeader>
-        <SubPara>UTC - 4:50</SubPara>
+        <SubPara>{payload?.utc}</SubPara>
       </SubContainer>
 
       <SubContainer>
         <SubHeader>ISP</SubHeader>
-        <SubPara>SpaceX</SubPara>
-        <SubPara>Starlink</SubPara>
+        <SubPara>{payload?.org}</SubPara>
       </SubContainer>
     </SectionContainer>
   );

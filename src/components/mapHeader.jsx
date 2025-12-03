@@ -100,9 +100,8 @@ export default function MapHeader() {
         postal: data.postal,
         timezone: data.timezone,
         org: data.org || data.company || "",
+        utc: data.utc_offset,
       };
-
-      console.log(data);
 
       setPayload(payload);
     } catch (err) {
