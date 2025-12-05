@@ -40,15 +40,11 @@ export default function LeafletMap() {
         style={{ height: "400px", width: "100%", zIndex: "-10px" }}
       >
         <Recenter center={center} />
-        {/* Using Carto tiles to avoid OSM timeout */}
-        {/* <TileLayer
-          url="https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
-          attribution="&copy; CartoDB"
-        /> */}
 
         <TileLayer
-          url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+          url="https://cartodb-basemaps-a.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, 
+          
         &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> 
         &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         />
