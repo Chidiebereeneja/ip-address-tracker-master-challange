@@ -118,7 +118,10 @@ export default function MapHeader() {
   return (
     <Header>
       <Figure>
-        <Image src="/images/pattern-bg-desktop.png" className="w-full h-full" />
+        <Image
+          src="/src/assets/images/pattern-bg-desktop.png"
+          className="w-full h-full"
+        />
       </Figure>
 
       <HeaderTextContainer>
