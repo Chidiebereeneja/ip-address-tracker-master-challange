@@ -1,8 +1,8 @@
-import styled from "styled-components";
-import { FaChevronRight } from "react-icons/fa";
-// import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
-import { UseIpAddress } from "../hooks/ipAddressContext";
+import { FaChevronRight } from "react-icons/fa";
+import { toast } from "react-toastify";
+import styled from "styled-components";
+import { Modal } from "../hooks/modal";
 
 const Header = styled.header`
   width: 100%;
@@ -72,18 +72,14 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-export default function MapHeader() {
-  //   const searchParams = useSearchParams();
+export default function MapHeader({ setPayload }) {
   const [ipAddress, setIpAddress] = useState("");
-  const { setPayload } = UseIpAddress();
 
-  const onSearchIpAddress = async function (e) {
+  async function onSearchIpAddress(e) {
     e.preventDefault();
-    try {
-      const url = ipAddress
-        ? `https://ipapi.co/${ipAddress}/json/`
-        : "https://ipapi.co/json/";
 
+    try {
+      const url = `https://ipapi.co/${ipAddress}/json/`;
       const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to fetch IP data");
       const data = await res.json();
@@ -105,11 +101,10 @@ export default function MapHeader() {
 
       setPayload(payload);
     } catch (err) {
-      console.log(err.message);
+      toast.error(err.message);
     }
+  }
 
-    // console.log(searchParams, ipAddress);
-  };
   return (
     <Header>
       <Figure>
@@ -128,9 +123,17 @@ export default function MapHeader() {
             placeholder="Search for any IP address or domain"
             onChange={(e) => setIpAddress(e.target.value)}
           />
-          <Button type="submit">
-            <FaChevronRight size={11} />
-          </Button>
+          {!ipAddress ? (
+            <Modal.OpenModal name="ip_address">
+              <Button type="button">
+                <FaChevronRight size={11} />
+              </Button>
+            </Modal.OpenModal>
+          ) : (
+            <Button type="submit">
+              <FaChevronRight size={11} />
+            </Button>
+          )}
         </Form>
       </HeaderTextContainer>
     </Header>
