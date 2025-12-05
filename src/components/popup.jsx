@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { Modal, UseModal } from "../hooks/modal";
 import { toast } from "react-toastify";
+import { useState } from "react";
+import Spinner from "./spinner";
+import { UseIpAddress } from "../hooks/ipAddressContext";
 
 const Container = styled.div`
   width: 100%;
@@ -25,6 +28,9 @@ const PElement = styled.p`
 `;
 
 const ButtonYes = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: dodgerblue;
   color: aliceblue;
   width: 100px;
@@ -53,10 +59,13 @@ const ButtonNo = styled.button`
   }
 `;
 
-export default function Popup({ setPayload }) {
-    const {dispatch} = UseModal()
+export default function Popup() {
+  const { setPayload } = UseIpAddress();
+  const [isLoading, setIsLoading] = useState(false);
+  const { dispatch } = UseModal();
   async function onRequestIp() {
     try {
+      setIsLoading(true);
       const url = `https://ipapi.co/json/`;
       const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to fetch IP data");
@@ -81,7 +90,8 @@ export default function Popup({ setPayload }) {
     } catch (err) {
       toast.error(err.message);
     } finally {
-        dispatch({ type: "close-modal" });
+      setIsLoading(false);
+      dispatch({ type: "close-modal" });
     }
   }
   return (
@@ -92,7 +102,9 @@ export default function Popup({ setPayload }) {
         <Modal.CloseModal>
           <ButtonNo>No</ButtonNo>
         </Modal.CloseModal>
-        <ButtonYes onClick={onRequestIp}>Yes</ButtonYes>
+        <ButtonYes onClick={onRequestIp}>
+          {isLoading ? <Spinner></Spinner> : "Yes"}
+        </ButtonYes>
       </GroupedDiv>
     </Container>
   );

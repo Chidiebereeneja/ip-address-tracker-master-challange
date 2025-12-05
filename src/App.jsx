@@ -3,9 +3,9 @@ import DetailedIpAddress from "./components/detailedIpAddress";
 import MapHeader from "./components/mapHeader";
 import Popup from "./components/popup";
 import "./fixLeafletIcons";
-import { UseIpAddress } from "./hooks/ipAddressContext";
 import { Modal } from "./hooks/modal";
 import LeafletMap from "./map/LeafletMap";
+import { ToastContainer } from "react-toastify";
 
 const Container = styled.div`
   width: 100%;
@@ -15,18 +15,27 @@ const Container = styled.div`
 `;
 
 export default function App() {
-  const { setPayload } = UseIpAddress();
   return (
     <Modal>
       <Container>
-        <MapHeader setPayload={setPayload} />
+        <ToastContainer
+          position="top-center"
+          autoClose={2500}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          pauseOnHover
+          draggable
+          theme="light"
+        />
+        <MapHeader />
         <DetailedIpAddress />
         <LeafletMap />
       </Container>
 
       <Modal.ModalWindow modalName="ip_address">
         <Modal.ModalContent className="flex flex-col gap-2 items-end">
-          <Popup setPayload={setPayload} />
+          <Popup />
         </Modal.ModalContent>
       </Modal.ModalWindow>
     </Modal>

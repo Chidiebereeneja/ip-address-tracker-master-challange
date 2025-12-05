@@ -41,8 +41,6 @@ const SubPara = styled.p`
 export default function DetailedIpAddress() {
   const { payload } = UseIpAddress();
 
-  if (!payload?.ip) return;
-
   return (
     <SectionContainer>
       <SubContainer>

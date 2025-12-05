@@ -2,7 +2,9 @@ import { useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import { UseIpAddress } from "../hooks/ipAddressContext";
 import { Modal } from "../hooks/modal";
+import Spinner from "./spinner";
 
 const Header = styled.header`
   width: 100%;
@@ -62,6 +64,9 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: hsl(0, 0%, 17%);
   color: #fff;
   height: 40px;
@@ -72,13 +77,16 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-export default function MapHeader({ setPayload }) {
+export default function MapHeader() {
+  const { setPayload } = UseIpAddress();
+  const [isLoading, setIsLoading] = useState(false);
   const [ipAddress, setIpAddress] = useState("");
 
   async function onSearchIpAddress(e) {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       const url = `https://ipapi.co/${ipAddress}/json/`;
       const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to fetch IP data");
@@ -102,6 +110,8 @@ export default function MapHeader({ setPayload }) {
       setPayload(payload);
     } catch (err) {
       toast.error(err.message);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -131,7 +141,7 @@ export default function MapHeader({ setPayload }) {
             </Modal.OpenModal>
           ) : (
             <Button type="submit">
-              <FaChevronRight size={11} />
+              {isLoading ? <Spinner /> : <FaChevronRight size={11} />}
             </Button>
           )}
         </Form>
