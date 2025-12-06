@@ -1,55 +1,82 @@
-import { MapContainer, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import styled from "styled-components";
 import Recenter from "../components/reCenter";
 import { UseIpAddress } from "../hooks/ipAddressContext";
+import { useEffect, useMemo, useState } from "react";
 
 const LeafLetContainer = styled.section`
   width: 100%;
-  height: 85vh;
+  height: 500px;
   z-index: -1;
 `;
 
+async function getRealAddress(lat, lon) {
+  const res = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
+  );
+  return res.json();
+}
+
 export default function LeafletMap() {
   const { payload } = UseIpAddress();
-  const center =
-    payload?.latitude && payload?.longitude
+
+  const center = useMemo(() => {
+    return payload?.latitude && payload?.longitude
       ? [payload.latitude, payload.longitude]
       : [6.5244, 3.3792];
+  }, [payload]);
+
+  const [realAddress, setRealAddress] = useState(null);
+
+  useEffect(() => {
+    async function loadAddress() {
+      const addr = await getRealAddress(center[0], center[1]);
+      setRealAddress(addr);
+    }
+    loadAddress();
+  }, [center]);
 
   return (
     <LeafLetContainer>
       <MapContainer
         center={center}
-        zoom={15}
+        zoom={17}
         zoomControl={false}
         scrollWheelZoom={false}
         doubleClickZoom={false}
         dragging={false}
         attributionControl={false}
-        style={{ height: "85vh", width: "100%", zIndex: "-1" }}
+        style={{ height: "500px", width: "100%", zIndex: "-1" }}
       >
         <Recenter center={center} />
 
-        <TileLayer
-          url="https://cartodb-basemaps-a.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, 
-          
-        &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> 
-        &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-        />
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
+        {/* User marker */}
         <Marker position={center}>
-          <Tooltip permanent direction="top">
-            {payload?.city}
-          </Tooltip>
-
           <Popup>
             <div>
-              <h3>{payload?.city}</h3>
-              <p>{payload?.region}</p>
-              <p>{payload?.country_name}</p>
-              <p>{payload?.ip}</p>
-              <p>{payload?.org}</p>
+              <h3 style={{ fontWeight: "bold" }}>
+                {realAddress?.address?.road || "Loading street..."}
+              </h3>
+
+              {realAddress?.address?.neighbourhood && (
+                <p>{realAddress.address.neighbourhood}</p>
+              )}
+
+              {realAddress?.address?.suburb && (
+                <p>{realAddress.address.suburb}</p>
+              )}
+
+              <p>
+                {realAddress?.address?.city ||
+                  realAddress?.address?.town ||
+                  realAddress?.address?.village}
+              </p>
+
+              <p>{realAddress?.address?.state}</p>
+              <p>{realAddress?.address?.country}</p>
+              <p>{realAddress?.address?.postcode}</p>
             </div>
           </Popup>
         </Marker>
