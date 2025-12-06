@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { UseIpAddress } from "../hooks/ipAddressContext";
 import { Modal } from "../hooks/modal";
 import Spinner from "./spinner";
+import { useIsMobile } from "../hooks/mobileChecker";
 
 const Header = styled.header`
   width: 100%;
@@ -81,6 +82,7 @@ export default function MapHeader() {
   const { setPayload } = UseIpAddress();
   const [isLoading, setIsLoading] = useState(false);
   const [ipAddress, setIpAddress] = useState("");
+  const isMobile = useIsMobile();
 
   async function onSearchIpAddress(e) {
     e.preventDefault();
@@ -118,7 +120,10 @@ export default function MapHeader() {
   return (
     <Header>
       <Figure>
-        <Image src="/pattern-bg-desktop.png" className="w-full h-full" />
+        <Image
+          src={isMobile ? "/pattern-bg-mobile.png" : "/pattern-bg-desktop.png"}
+          className="w-full h-full"
+        />
       </Figure>
 
       <HeaderTextContainer>

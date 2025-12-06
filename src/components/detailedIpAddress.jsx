@@ -5,6 +5,7 @@ const SectionContainer = styled.section`
   align-self: center;
   background-color: #fff;
   color: #000;
+  max-width: 800px;
   width: 85%;
   height: 100px;
   display: flex;
@@ -16,11 +17,24 @@ const SectionContainer = styled.section`
   top: 150px;
   border-radius: 10px;
   box-shadow: 0px 0px 100px #00000044;
+
+  @media (max-width: 768px) {
+    width: 90%;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    height: fit-content;
+    top: 120px;
+  }
 `;
 
 const SubContainer = styled.section`
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const SubHeader = styled.h3`
@@ -29,6 +43,12 @@ const SubHeader = styled.h3`
   text-transform: uppercase;
   color: hsl(0, 0%, 58%);
   line-height: 17px;
+
+  @media (max-width: 768px) {
+    color: hsl(0, 0%, 27.450980392156865%);
+    width: 100%;
+    text-align: center;
+  }
 `;
 
 const SubPara = styled.p`
@@ -36,7 +56,14 @@ const SubPara = styled.p`
   font-weight: 700;
   color: hsl(0, 0%, 17%);
   line-height: 26px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    text-align: center;
+  }
 `;
+
+const UtcFormatter = (str) => `UTC${str?.slice(0, 3)}:${str?.slice(3, 5)}`;
 
 export default function DetailedIpAddress() {
   const { payload } = UseIpAddress();
@@ -57,7 +84,7 @@ export default function DetailedIpAddress() {
 
       <SubContainer>
         <SubHeader>TimeZone</SubHeader>
-        <SubPara>{payload?.utc}</SubPara>
+        <SubPara>{payload?.utc ? UtcFormatter(payload?.utc) : ""} </SubPara>
       </SubContainer>
 
       <SubContainer>
