@@ -125,6 +125,7 @@ export default function MapHeader() {
     <Header>
       <Figure>
         <Image
+          loading="lazy"
           src={isMobile ? "/pattern-bg-mobile.png" : "/pattern-bg-desktop.png"}
           className="w-full h-full"
         />

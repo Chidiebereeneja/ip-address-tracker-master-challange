@@ -5,7 +5,7 @@ const SectionContainer = styled.section`
   align-self: center;
   background-color: #fff;
   color: #000;
-  max-width: 800px;
+  max-width: 850px;
   width: 85%;
   height: 100px;
   display: flex;
@@ -63,6 +63,16 @@ const SubPara = styled.p`
   }
 `;
 
+const LineIndicator = styled.div`
+  height: 100%;
+  width: 1.1px;
+  background-color: hsla(0, 0%, 72.15686274509804%, 0.671);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
 const UtcFormatter = (str) => `UTC${str?.slice(0, 3)}:${str?.slice(3, 5)}`;
 
 export default function DetailedIpAddress() {
@@ -75,6 +85,8 @@ export default function DetailedIpAddress() {
         <SubPara>{payload?.ip}</SubPara>
       </SubContainer>
 
+      <LineIndicator />
+
       <SubContainer>
         <SubHeader>Location</SubHeader>
         <SubPara>{`${payload?.city || ""}${payload?.city ? "," : ""} ${
@@ -82,10 +94,14 @@ export default function DetailedIpAddress() {
         }`}</SubPara>
       </SubContainer>
 
+      <LineIndicator />
+
       <SubContainer>
         <SubHeader>TimeZone</SubHeader>
         <SubPara>{payload?.utc ? UtcFormatter(payload?.utc) : ""} </SubPara>
       </SubContainer>
+
+      <LineIndicator />
 
       <SubContainer>
         <SubHeader>ISP</SubHeader>

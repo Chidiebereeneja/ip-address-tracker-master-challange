@@ -1,11 +1,11 @@
-import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
 import styled from "styled-components";
 import Recenter from "../components/reCenter";
 import { UseIpAddress } from "../hooks/ipAddressContext";
 
 const LeafLetContainer = styled.section`
   width: 100%;
-  height: 400px;
+  height: 85vh;
   z-index: -1;
 `;
 
@@ -26,7 +26,7 @@ export default function LeafletMap() {
         doubleClickZoom={false}
         dragging={false}
         attributionControl={false}
-        style={{ height: "400px", width: "100%", zIndex: "-10px" }}
+        style={{ height: "85vh", width: "100%", zIndex: "-1" }}
       >
         <Recenter center={center} />
 
@@ -38,7 +38,21 @@ export default function LeafletMap() {
         &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         />
 
-        <Marker position={center}></Marker>
+        <Marker position={center}>
+          <Tooltip permanent direction="top">
+            {payload?.city}
+          </Tooltip>
+
+          <Popup>
+            <div>
+              <h3>{payload?.city}</h3>
+              <p>{payload?.region}</p>
+              <p>{payload?.country_name}</p>
+              <p>{payload?.ip}</p>
+              <p>{payload?.org}</p>
+            </div>
+          </Popup>
+        </Marker>
       </MapContainer>
     </LeafLetContainer>
   );
