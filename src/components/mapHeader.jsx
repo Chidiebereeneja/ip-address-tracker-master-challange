@@ -53,8 +53,8 @@ const Form = styled.form`
 
 const Input = styled.input`
   height: 40px;
-  min-width: 300px;
-  max-width: 50%;
+  min-width: 250px;
+  max-width: 70%;
   padding-inline: 8px;
   font-size: 14px;
   outline: none;
