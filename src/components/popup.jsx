@@ -43,6 +43,10 @@ const ButtonYes = styled.button`
   &:hover {
     box-shadow: 0px 1px 5px #00000061;
   }
+
+  &:disabled {
+    cursor: default;
+  }
 `;
 
 const ButtonNo = styled.button`
@@ -56,6 +60,10 @@ const ButtonNo = styled.button`
 
   &:hover {
     box-shadow: 0px 1px 5px #00000061;
+  }
+
+  &:disabled {
+    cursor: default;
   }
 `;
 
@@ -100,9 +108,9 @@ export default function Popup() {
 
       <GroupedDiv>
         <Modal.CloseModal>
-          <ButtonNo>No</ButtonNo>
+          <ButtonNo disabled={isLoading}>No</ButtonNo>
         </Modal.CloseModal>
-        <ButtonYes onClick={onRequestIp}>
+        <ButtonYes onClick={onRequestIp} disabled={isLoading}>
           {isLoading ? <Spinner></Spinner> : "Yes"}
         </ButtonYes>
       </GroupedDiv>

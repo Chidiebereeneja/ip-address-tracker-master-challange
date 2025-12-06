@@ -76,6 +76,10 @@ const Button = styled.button`
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+  }
 `;
 
 export default function MapHeader() {
@@ -142,7 +146,7 @@ export default function MapHeader() {
               </Button>
             </Modal.OpenModal>
           ) : (
-            <Button type="submit">
+            <Button type="submit" disabled={isLoading}>
               {isLoading ? <Spinner /> : <FaChevronRight size={11} />}
             </Button>
           )}
