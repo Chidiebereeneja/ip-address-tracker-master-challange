@@ -1,5 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet";
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import styled from "styled-components";
 import Recenter from "../components/reCenter";
 import { UseIpAddress } from "../hooks/ipAddressContext";
@@ -9,16 +8,6 @@ const LeafLetContainer = styled.section`
   height: 400px;
   z-index: -1;
 `;
-
-const smallMarker = new L.Icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [24, 24], // <-- Smaller marker
-  iconAnchor: [12, 24],
-  popupAnchor: [0, -24],
-});
 
 export default function LeafletMap() {
   const { payload } = UseIpAddress();
@@ -49,9 +38,7 @@ export default function LeafletMap() {
         &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         />
 
-        <Marker position={center} icon={smallMarker}>
-          <Popup>Working map using Vite + React + Leaflet!</Popup>
-        </Marker>
+        <Marker position={center}></Marker>
       </MapContainer>
     </LeafLetContainer>
   );
